@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>多任务计时器</title>
+    <style>
+        /* 全局重置和基础样式 */
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            background-color: #DFDBE5;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 192 192'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M192 15v2a11 11 0 0 0-11 11c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H145v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11 13 13 0 1 1 .02 26 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43a6.1 6.1 0 0 0-3.03 4.87V143h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 181 164a11 11 0 0 0 11 11v2a13 13 0 0 1-13-13 12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84a6.1 6.1 0 0 0-4.87-3.03H145v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 124 181a11 11 0 0 0-11 11h-2a13 13 0 0 1 13-13c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43a6.1 6.1 0 0 0 3.03-4.87V145h-35.02a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 107 124a11 11 0 0 0-22 0c0 1.94 1.16 4.75 2.53 6.11l2.36 2.36a6.93 6.93 0 0 1 1.22 7.56l-.43.84a8.08 8.08 0 0 1-6.66 4.13H49v35.02a6.1 6.1 0 0 0 3.03 4.87l.84.43c1.58.79 4 .4 5.24-.85l2.36-2.36a12.04 12.04 0 0 1 7.51-3.11A13 13 0 0 1 81 192h-2a11 11 0 0 0-11-11c-1.94 0-4.75 1.16-6.11 2.53l-2.36 2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V145H11.98a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 0 1 0 177v-2a11 11 0 0 0 11-11c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H47v-35.02a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 28 109a13 13 0 1 1 0-26c2.47 0 5.79 1.37 7.53 3.11l2.36 2.36a4.94 4.94 0 0 0 5.24.85l.84-.43A6.1 6.1 0 0 0 47 84.02V49H11.98a8.08 8.08 0 0 1-6.66-4.13l-.43-.84a6.91 6.91 0 0 1 1.22-7.56l2.36-2.36A10.06 10.06 0 0 0 11 28 11 11 0 0 0 0 17v-2a13 13 0 0 1 13 13c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84A6.1 6.1 0 0 0 11.98 47H47V11.98a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 68 11 11 11 0 0 0 79 0h2a13 13 0 0 1-13 13 12 12 0 0 1-7.53-3.11l-2.36-2.36a4.93 4.93 0 0 0-5.24-.85l-.84.43A6.1 6.1 0 0 0 49 11.98V47h35.02a8.08 8.08 0 0 1 6.66 4.13l.43.84a6.91 6.91 0 0 1-1.22 7.56l-2.36 2.36A10.06 10.06 0 0 0 85 68a11 11 0 0 0 22 0c0-1.94-1.16-4.75-2.53-6.11l-2.36-2.36a6.93 6.93 0 0 1-1.22-7.56l.43-.84a8.08 8.08 0 0 1 6.66-4.13H143V11.98a6.1 6.1 0 0 0-3.03-4.87l-.84-.43c-1.59-.8-4-.4-5.24.85l-2.36 2.36A12 12 0 0 1 124 13a13 13 0 0 1-13-13h2a11 11 0 0 0 11 11c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V47h35.02a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 179 28a13 13 0 0 1 13-13zM84.02 143a6.1 6.1 0 0 0 4.87-3.03l.43-.84c.8-1.59.4-4-.85-5.24l-2.36-2.36A12 12 0 0 1 83 124a13 13 0 1 1 26 0c0 2.47-1.37 5.79-3.11 7.53l-2.36 2.36a4.94 4.94 0 0 0-.85 5.24l.43.84a6.1 6.1 0 0 0 4.87 3.03H143v-35.02a8.08 8.08 0 0 1 4.13-6.66l.84-.43a6.91 6.91 0 0 1 7.56 1.22l2.36 2.36A10.06 10.06 0 0 0 164 107a11 11 0 0 0 0-22c-1.94 0-4.75 1.16-6.11 2.53l-2.36-2.36a6.93 6.93 0 0 1-7.56 1.22l-.84-.43a8.08 8.08 0 0 1-4.13-6.66V49h-35.02a6.1 6.1 0 0 0-4.87 3.03l-.43.84c-.79 1.58-.4 4 .85 5.24l2.36 2.36a12.04 12.04 0 0 1 3.11 7.51A13 13 0 1 1 83 68a12 12 0 0 1 3.11-7.53l2.36-2.36a4.93 4.93 0 0 0 .85-5.24l-.43-.84A6.1 6.1 0 0 0 84.02 49H49v35.02a8.08 8.08 0 0 1-4.13 6.66l-.84.43a6.91 6.91 0 0 1-7.56-1.22l-2.36-2.36A10.06 10.06 0 0 0 28 85a11 11 0 0 0 0 22c1.94 0 4.75-1.16 6.11-2.53l2.36-2.36a6.93 6.93 0 0 1 7.56-1.22l.84.43a8.08 8.08 0 0 1 4.13 6.66V143h35.02z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: 192px 192px ;
+            background-repeat: repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-y: auto;
+            color: #333;
+            box-sizing: border-box;
+            padding: 30px 30px 60px;
+            position: relative;
+        }
+
+        /* 清除数据按钮 - 整个页面右上角 */
+        .clear-all-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: rgba(220, 53, 69, 0.8); /* 半透明红色 */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .clear-all-btn:hover {
+            background-color: rgba(200, 35, 51, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .clear-all-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 数据管理按钮 */
+        .data-management-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: rgba(108, 117, 125, 0.8); /* 半透明灰色 */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .data-management-btn:hover {
+            background-color: rgba(90, 98, 104, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .data-management-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 数据管理面板 */
+        .data-management-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            width: 90%;
+            max-width: 500px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .data-management-panel h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .data-management-panel textarea {
+            width: 100%;
+            height: 200px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9em;
+            resize: vertical;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .data-management-panel .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .data-management-panel button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+
+        .data-management-panel .import-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .data-management-panel .import-btn:hover {
+            background-color: #218838;
+        }
+
+        .data-management-panel .export-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .data-management-panel .export-btn:hover {
+            background-color: #0069d9;
+        }
+
+        .data-management-panel .close-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .data-management-panel .close-btn:hover {
+            background-color: #5a6268;
+        }
+
+        /* 遮罩层 */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+        }
+
+        /* 容器：包裹所有主要内容，作为内容的整体背景 */
+        .main-content-wrapper {
+            background-color: rgba(240, 240, 240, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* 标题 */
+        h2 {
+            color: #4a4a4a;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+
+        /* 总时长显示区域 */
+        #totalTimeDisplay {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* 输入和控制区域 */
+        .input-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: #fff;
+        }
+
+        input[type="text"]:focus {
+            border-color: #a8daff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            white-space: nowrap;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        /* 主操作按钮颜色 */
+        button:nth-of-type(1) {
+            background-color: #007bff;
+            color: white;
+        }
+
+        button:nth-of-type(1):hover {
+            background-color: #0069d9;
+        }
+
+        button:nth-of-type(2) {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        button:nth-of-type(2):hover {
+            background-color: #5a6268;
+        }
+
+        /* 任务列表 */
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        .task {
+            background: #ffffff;
+            padding: 18px 25px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            cursor: grab;
+            transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border: 1px solid transparent;
+        }
+
+        .task:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 任务名称显示区域 */
+        .task-name-display {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 1.3em;
+            width: 100%;
+            word-break: break-word;
+        }
+
+        /* 任务名称编辑框 */
+        .task-name-edit-input {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #2c3e50;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 8px;
+            margin-bottom: 8px;
+            width: calc(100% - 18px);
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .task-name-edit-input:focus {
+            border-color: #007bff;
+        }
+
+        /* 备注区域的样式 */
+        .task-notes {
+            width: 100%;
+            min-height: 50px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            line-height: 1.5;
+            resize: vertical;
+            box-sizing: border-box;
+            margin-top: 10px;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .task-notes:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .task .time {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        /* 新增：编辑时间输入框容器样式 */
+        .time-edit-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* 新增：编辑时间输入框样式 */
+        .time-edit-container input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+            -moz-appearance: textfield; /* 隐藏 Firefox 的上下箭头 */
+        }
+
+        /* 隐藏 Chrome/Safari 的上下箭头 */
+        .time-edit-container input::-webkit-outer-spin-button,
+        .time-edit-container input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .time-edit-container span {
+            font-size: 1.1em;
+            color: #666;
+            white-space: nowrap;
+        }
+
+
+        .task .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .task .button-group button {
+            padding: 8px 15px;
+            font-size: 0.9em;
+            border-radius: 6px;
+            box-shadow: none;
+            font-weight: 500;
+        }
+
+        /* 任务内部按钮颜色 */
+        .task .toggleBtn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .task .toggleBtn:hover {
+            background-color: #218838;
+        }
+
+        .task .toggleBtn[data-state="paused"] {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .task .toggleBtn[data-state="paused"]:hover {
+            background-color: #e0a800;
+        }
+
+        .task .clearBtn {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+        .task .clearBtn:hover {
+            background-color: #dae0e5;
+        }
+
+        .task .deleteBtn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .task .deleteBtn:hover {
+            background-color: #c82333;
+        }
+
+        /* 拖放时的视觉效果 */
+        .task.dragging {
+            opacity: 0.6;
+            transform: scale(1.01);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* 拖动插入指示线 */
+        .task.drop-target-above {
+            border-top: 3px solid #007bff;
+            margin-top: 12px;
+            transition: none;
+        }
+
+        .task.drop-target-below {
+            border-bottom: 3px solid #007bff;
+            margin-bottom: 12px;
+            transition: none;
+        }
+    </style>
+</head>
+
+<body>
+    <button class="data-management-btn" onclick="showDataManagementPanel()">数据管理</button>
+    <button class="clear-all-btn" onclick="clearAllData()">清除数据</button>
+    
+    <div class="overlay" id="overlay" onclick="hideDataManagementPanel()"></div>
+    
+    <div class="data-management-panel" id="dataManagementPanel">
+        <h3>数据管理</h3>
+        <p>使用此功能在不同浏览器间迁移数据：</p>
+        <ol>
+            <li>在旧浏览器中点击"导出数据"</li>
+            <li>复制文本框中的内容</li>
+            <li>在新浏览器中打开此页面</li>
+            <li>点击"导入数据"并粘贴之前复制的内容</li>
+        </ol>
+        <textarea id="dataTextarea" placeholder="数据将显示在这里..."></textarea>
+        <div class="button-group">
+            <button class="import-btn" onclick="importData()">导入数据</button>
+            <button class="export-btn" onclick="exportData()">导出数据</button>
+            <button class="close-btn" onclick="hideDataManagementPanel()">关闭</button>
+        </div>
+    </div>
+    
+    <div class="main-content-wrapper">
+        <h2>多任务计时器</h2>
+        <div id="totalTimeDisplay">总时长：0.0小时</div>
+        <div class="input-controls">
+            <input type="text" id="taskInput" placeholder="输入任务名称并按回车">
+            <button onclick="createTask()">创建任务</button>
+            <button onclick="exportTasks()">导出报告</button>
+        </div>
+        <ul id="taskList" class="task-list"></ul>
+    </div>
+
+    <script>
+        const taskList = document.getElementById("taskList");
+        const taskInput = document.getElementById("taskInput");
+        const totalTimeDisplay = document.getElementById("totalTimeDisplay");
+        const dataManagementPanel = document.getElementById("dataManagementPanel");
+        const dataTextarea = document.getElementById("dataTextarea");
+        const overlay = document.getElementById("overlay");
+        const tasks = {};
+        
+        // 本地存储键名
+        const STORAGE_KEY = 'multiTaskTimerData';
+
+        let draggedItem = null;
+        let globalTimer = null;
+
+        /**
+         * 显示数据管理面板
+         */
+        function showDataManagementPanel() {
+            dataManagementPanel.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        /**
+         * 隐藏数据管理面板
+         */
+        function hideDataManagementPanel() {
+            dataManagementPanel.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        /**
+         * 导出数据到文本区域
+         */
+        function exportData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            if (data) {
+                dataTextarea.value = data;
+                console.log("数据已导出到文本框");
+            } else {
+                dataTextarea.value = "暂无数据";
+            }
+        }
+
+        /**
+         * 从文本区域导入数据
+         */
+        function importData() {
+            const data = dataTextarea.value.trim();
+            if (!data) {
+                alert("请先粘贴要导入的数据");
+                return;
+            }
+            
+            try {
+                // 验证JSON格式
+                JSON.parse(data);
+                
+                if (confirm("导入数据将覆盖当前所有任务，确定要继续吗？")) {
+                    localStorage.setItem(STORAGE_KEY, data);
+                    
+                    // 清除当前任务
+                    for (const taskName in tasks) {
+                        if (tasks.hasOwnProperty(taskName)) {
+                            const taskData = tasks[taskName];
+                            if (taskData.timerId) clearInterval(taskData.timerId);
+                        }
+                    }
+                    
+                    // 清空任务对象和列表
+                    Object.keys(tasks).forEach(key => delete tasks[key]);
+                    taskList.innerHTML = '';
+                    
+                    // 重新加载数据
+                    loadTasksFromStorage();
+                    updateOverallTotalTime();
+                    
+                    hideDataManagementPanel();
+                    alert("数据导入成功！");
+                }
+            } catch (e) {
+                alert("数据格式不正确，无法导入！");
+                console.error("导入数据失败:", e);
+            }
+        }
+
+        /**
+         * 从本地存储加载任务数据
+         */
+        function loadTasksFromStorage() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    if (parsedData && parsedData.tasks) {
+                        // 按照保存的顺序恢复任务
+                        parsedData.tasks.forEach(taskData => {
+                            createTaskFromSavedData(taskData);
+                        });
+                    }
+                } catch (e) {
+                    console.error('加载保存的数据失败:', e);
+                }
+            }
+        }
+
+        /**
+         * 从保存的数据创建任务
+         * @param {Object} taskData - 保存的任务数据
+         */
+        function createTaskFromSavedData(taskData) {
+            const li = document.createElement("li");
+            li.className = "task";
+            li.draggable = true;
+
+            const taskNameDisplay = document.createElement('strong');
+            taskNameDisplay.className = 'task-name-display';
+            taskNameDisplay.textContent = taskData.name;
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'time';
+            // 修复：确保显示整数秒
+            timeSpan.textContent = formatTime(Math.round(taskData.totalTime || 0));
+
+            const notesTextarea = document.createElement('textarea');
+            notesTextarea.className = 'task-notes';
+            notesTextarea.placeholder = '在此处添加备注...';
+            notesTextarea.value = taskData.notes || '';
+
+            const buttonGroup = document.createElement('div');
+            buttonGroup.className = 'button-group';
+
+            const toggleBtn = document.createElement('button');
+            toggleBtn.className = 'toggleBtn';
+            toggleBtn.textContent = taskData.timerRunning ? "暂停" : "开始";
+            if (taskData.timerRunning) {
+                toggleBtn.removeAttribute('data-state');
+            } else {
+                toggleBtn.setAttribute('data-state', 'paused');
+            }
+
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'clearBtn';
+            clearBtn.textContent = '清除';
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'deleteBtn';
+            deleteBtn.textContent = '删除任务';
+
+            buttonGroup.append(toggleBtn, clearBtn, deleteBtn);
+            li.append(taskNameDisplay, timeSpan, notesTextarea, buttonGroup);
+            taskList.appendChild(li);
+
+            // 修复：确保保存和加载的时间都是整数秒
+            tasks[taskData.name] = {
+                totalTime: Math.round(taskData.totalTime || 0), // 四舍五入为整数秒
+                timerId: null,
+                currentSegmentStartTime: 0,
+                timeSpan: timeSpan,
+                toggleBtn: toggleBtn,
+                liElement: li,
+                nameDisplayElement: taskNameDisplay,
+                notesElement: notesTextarea
+            };
+
+            const taskDataObj = tasks[taskData.name];
+
+            // 如果任务之前是运行状态，恢复计时器
+            if (taskData.timerRunning) {
+                taskDataObj.currentSegmentStartTime = Date.now();
+                taskDataObj.timerId = setInterval(() => {
+                    const currentTime = Date.now();
+                    const elapsedThisSegment = (currentTime - taskDataObj.currentSegmentStartTime) / 1000;
+                    // 修复：显示时使用整数秒
+                    taskDataObj.timeSpan.textContent = formatTime(Math.round(taskDataObj.totalTime + elapsedThisSegment));
+                }, 1000);
+            }
+
+            let isSavingTaskName = false;
+
+            // 点击时间修改功能
+            timeSpan.addEventListener('click', () => {
+                // 如果计时器正在运行，先暂停
+                if (taskDataObj.timerId) {
+                    taskDataObj.toggleBtn.click(); // 模拟点击暂停按钮
+                }
+                
+                // 将总秒数分解为小时、分钟和秒
+                let seconds = taskDataObj.totalTime;
+                const h = Math.floor(seconds / 3600);
+                seconds %= 3600;
+                const m = Math.floor(seconds / 60);
+                const s = Math.round(seconds % 60);
+
+                // 创建包含三个输入框的容器
+                const editContainer = document.createElement('div');
+                editContainer.className = 'time-edit-container';
+                editContainer.tabIndex = -1; // 使容器可获得焦点
+
+                const hInput = document.createElement('input');
+                hInput.type = 'number';
+                hInput.value = h;
+                hInput.min = 0;
+
+                const mInput = document.createElement('input');
+                mInput.type = 'number';
+                mInput.value = m;
+                mInput.min = 0;
+                mInput.max = 59; // 分钟的最大值
+
+                const sInput = document.createElement('input');
+                sInput.type = 'number';
+                sInput.value = s;
+                sInput.min = 0;
+                sInput.max = 59; // 秒的最大值
+
+                // 将输入框和标签添加到容器中
+                const hourSpan = document.createElement('span');
+                hourSpan.textContent = '时';
+                const minuteSpan = document.createElement('span');
+                minuteSpan.textContent = '分';
+                const secondSpan = document.createElement('span');
+                secondSpan.textContent = '秒';
+                
+                editContainer.append(hInput, hourSpan, mInput, minuteSpan, sInput, secondSpan);
+
+                // 替换时间显示元素
+                li.replaceChild(editContainer, timeSpan);
+                hInput.focus();
+
+                /**
+                 * 保存编辑后的时间。
+                 */
+                const saveTime = () => {
+                    // 获取新的小时、分钟、秒数
+                    const newH = parseInt(hInput.value, 10) || 0;
+                    const newM = parseInt(mInput.value, 10) || 0;
+                    const newS = parseInt(sInput.value, 10) || 0;
+
+                    // 检查输入是否有效
+                    if (newH < 0 || newM < 0 || newS < 0) {
+                        console.error("请输入有效的非负数字！");
+                        li.replaceChild(timeSpan, editContainer); // 恢复旧的显示
+                        return;
+                    }
+                    if (newM > 59 || newS > 59) {
+                        console.error("分钟和秒的输入不能超过59！");
+                        li.replaceChild(timeSpan, editContainer); // 恢复旧的显示
+                        return;
+                    }
+
+                    // 计算新的总秒数
+                    const newTotalTime = (newH * 3600) + (newM * 60) + newS;
+                    taskDataObj.totalTime = newTotalTime;
+                    taskDataObj.timeSpan.textContent = formatTime(Math.round(taskDataObj.totalTime));
+                    updateOverallTotalTime();
+                    saveTasksToStorage();
+                    
+                    // 恢复旧的显示
+                    li.replaceChild(timeSpan, editContainer);
+                };
+
+                // 新的逻辑：当编辑容器失去焦点时保存
+                editContainer.addEventListener('blur', saveTime);
+
+                // 监听所有输入框的"Enter"键事件
+                const keypressHandler = (e) => {
+                    if (e.key === 'Enter') {
+                        saveTime();
+                    }
+                };
+                hInput.addEventListener('keypress', keypressHandler);
+                mInput.addEventListener('keypress', keypressHandler);
+                sInput.addEventListener('keypress', keypressHandler);
+            });
+
+            taskNameDisplay.addEventListener('click', () => {
+                if (taskNameDisplay.classList.contains('task-name-display') && !isSavingTaskName) {
+                    const currentName = taskNameDisplay.textContent;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'task-name-edit-input';
+                    input.value = currentName;
+                    li.replaceChild(input, taskNameDisplay);
+                    input.focus();
+
+                    const saveName = () => {
+                        if (isSavingTaskName) return;
+                        isSavingTaskName = true;
+
+                        const newName = input.value.trim();
+                        input.removeEventListener('blur', saveName);
+                        input.removeEventListener('keypress', keypressHandler);
+
+                        if (!newName) {
+                            console.error("任务名称不能为空！");
+                            taskNameDisplay.textContent = currentName;
+                            li.replaceChild(taskNameDisplay, input);
+                            isSavingTaskName = false;
+                            return;
+                        }
+                        if (newName !== currentName && tasks.hasOwnProperty(newName)) {
+                            console.error("新任务名称已存在，请使用其他名称！");
+                            taskNameDisplay.textContent = currentName;
+                            li.replaceChild(taskNameDisplay, input);
+                            isSavingTaskName = false;
+                            return;
+                        }
+                        if (newName !== currentName) {
+                            tasks[newName] = tasks[currentName];
+                            delete tasks[currentName];
+                        }
+                        taskNameDisplay.textContent = newName;
+                        li.replaceChild(taskNameDisplay, input);
+                        isSavingTaskName = false;
+                        updateOverallTotalTime();
+                        saveTasksToStorage();
+                    };
+
+                    const keypressHandler = (e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            saveName();
+                        }
+                    };
+                    input.addEventListener('blur', saveName);
+                    input.addEventListener('keypress', keypressHandler);
+                }
+            });
+
+            taskDataObj.toggleBtn.onclick = () => {
+                if (taskDataObj.timerId) {
+                    clearInterval(taskDataObj.timerId);
+                    taskDataObj.timerId = null;
+                    taskDataObj.totalTime += (Date.now() - taskDataObj.currentSegmentStartTime) / 1000;
+                    // 修复：保存时使用整数秒
+                    taskDataObj.totalTime = Math.round(taskDataObj.totalTime);
+                    taskDataObj.timeSpan.textContent = formatTime(taskDataObj.totalTime);
+                    taskDataObj.toggleBtn.textContent = "继续";
+                    taskDataObj.toggleBtn.setAttribute('data-state', 'paused');
+                } else {
+                    taskDataObj.currentSegmentStartTime = Date.now();
+                    taskDataObj.timerId = setInterval(() => {
+                        const currentTime = Date.now();
+                        const elapsedThisSegment = (currentTime - taskDataObj.currentSegmentStartTime) / 1000;
+                        // 修复：显示时使用整数秒
+                        taskDataObj.timeSpan.textContent = formatTime(Math.round(taskDataObj.totalTime + elapsedThisSegment));
+                    }, 1000);
+                    taskDataObj.toggleBtn.textContent = "暂停";
+                    taskDataObj.toggleBtn.removeAttribute('data-state');
+                }
+                updateOverallTotalTime();
+                saveTasksToStorage();
+            };
+
+            clearBtn.onclick = () => {
+                taskDataObj.totalTime = 0;
+                taskDataObj.currentSegmentStartTime = 0;
+                taskDataObj.timeSpan.textContent = formatTime(taskDataObj.totalTime);
+                taskDataObj.notesElement.value = '';
+                if (taskDataObj.timerId) clearInterval(taskDataObj.timerId);
+                taskDataObj.timerId = null;
+                taskDataObj.toggleBtn.textContent = "开始";
+                taskDataObj.toggleBtn.removeAttribute('data-state');
+                updateOverallTotalTime();
+                saveTasksToStorage();
+            };
+
+            deleteBtn.onclick = () => {
+                if (taskDataObj.timerId) clearInterval(taskDataObj.timerId);
+                const nameToDelete = taskDataObj.nameDisplayElement.textContent;
+                if (tasks.hasOwnProperty(nameToDelete)) {
+                    delete tasks[nameToDelete];
+                }
+                taskList.removeChild(li);
+                updateOverallTotalTime();
+                saveTasksToStorage();
+            };
+
+            // 备注变化时保存
+            notesTextarea.addEventListener('blur', () => {
+                saveTasksToStorage();
+            });
+
+            li.addEventListener("dragstart", e => {
+                draggedItem = li;
+                e.dataTransfer.effectAllowed = "move";
+                setTimeout(() => {
+                    li.classList.add("dragging");
+                }, 0);
+            });
+
+            li.addEventListener("dragover", e => {
+                e.preventDefault();
+                Array.from(taskList.children).forEach(item => {
+                    item.classList.remove("drop-target-above", "drop-target-below");
+                });
+                if (draggedItem === li) return;
+                const rect = li.getBoundingClientRect();
+                const mouseY = e.clientY;
+                const middleY = rect.top + rect.height / 2;
+                if (mouseY < middleY) {
+                    li.classList.add("drop-target-above");
+                } else {
+                    li.classList.add("drop-target-below");
+                }
+            });
+
+            li.addEventListener("dragleave", () => {
+                li.classList.remove("drop-target-above", "drop-target-below");
+            });
+
+            li.addEventListener("drop", e => {
+                e.preventDefault();
+                Array.from(taskList.children).forEach(item => {
+                    item.classList.remove("drop-target-above", "drop-target-below");
+                });
+                if (draggedItem && draggedItem !== li) {
+                    const rect = li.getBoundingClientRect();
+                    const mouseY = e.clientY;
+                    const middleY = rect.top + rect.height / 2;
+                    if (mouseY < middleY) {
+                        taskList.insertBefore(draggedItem, li);
+                    } else {
+                        taskList.insertBefore(draggedItem, li.nextSibling);
+                    }
+                    saveTasksToStorage(); // 保存新的顺序
+                }
+            });
+
+            li.addEventListener("dragend", () => {
+                if (draggedItem) {
+                    draggedItem.classList.remove("dragging");
+                    draggedItem = null;
+                }
+                Array.from(taskList.children).forEach(item => {
+                    item.classList.remove("drop-target-above", "drop-target-below");
+                });
+            });
+
+            updateOverallTotalTime();
+        }
+
+        /**
+         * 格式化时间，将秒数转换为"X小时Y分钟Z秒"格式。
+         * @param {number} seconds - 要格式化的总秒数。
+         * @returns {string} 格式化后的时间字符串。
+         */
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600);
+            const m = Math.floor((seconds % 3600) / 60);
+            const s = seconds % 60;
+            return `${h}小时${m}分钟${s}秒`;
+        }
+
+        /**
+         * 更新总计时器显示。
+         */
+        function updateOverallTotalTime() {
+            let overallTotalSeconds = 0;
+            for (const taskName in tasks) {
+                if (tasks.hasOwnProperty(taskName)) {
+                    const taskData = tasks[taskName];
+                    let currentTaskTime = taskData.totalTime || 0;
+                    if (taskData.timerId !== null) {
+                        currentTaskTime += (Date.now() - taskData.currentSegmentStartTime) / 1000;
+                    }
+                    overallTotalSeconds += currentTaskTime;
+                }
+            }
+            totalTimeDisplay.textContent = `总时长：${(overallTotalSeconds / 3600).toFixed(1)}小时`;
+        }
+
+        globalTimer = setInterval(updateOverallTotalTime, 1000);
+
+        /**
+         * 创建一个新的任务卡片。
+         * @param {string} [name=null] - 任务名称，如果为null则从输入框获取。
+         */
+        function createTask(name = null) {
+            const taskName = name || taskInput.value.trim();
+            if (!taskName) {
+                console.error("任务名称不能为空！");
+                return;
+            }
+            if (tasks[taskName]) {
+                console.error("任务名称已存在，请使用其他名称！");
+                return;
+            }
+
+            const taskData = {
+                name: taskName,
+                totalTime: 0,
+                notes: '',
+                timerRunning: false
+            };
+            
+            createTaskFromSavedData(taskData);
+            taskInput.value = "";
+            saveTasksToStorage();
+        }
+
+        /**
+         * 将任务数据保存到本地存储
+         */
+        function saveTasksToStorage() {
+            const taskElements = Array.from(taskList.children);
+            const tasksData = taskElements.map(li => {
+                const name = li.querySelector(".task-name-display").textContent;
+                const taskData = tasks[name];
+                let totalTime = taskData.totalTime || 0;
+                
+                // 如果计时器正在运行，加上当前段的时间
+                if (taskData.timerId !== null) {
+                    totalTime += (Date.now() - taskData.currentSegmentStartTime) / 1000;
+                }
+                
+                // 修复：保存时使用整数秒
+                totalTime = Math.round(totalTime);
+                
+                return {
+                    name: name,
+                    totalTime: totalTime,
+                    notes: taskData.notesElement.value,
+                    timerRunning: taskData.timerId !== null
+                };
+            });
+            
+            const dataToSave = {
+                tasks: tasksData,
+                saveTime: new Date().toISOString()
+            };
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+        }
+
+        /**
+         * 清除所有数据和本地存储
+         */
+        function clearAllData() {
+            if (confirm("确定要清除所有任务数据吗？此操作不可撤销。")) {
+                // 清除所有计时器
+                for (const taskName in tasks) {
+                    if (tasks.hasOwnProperty(taskName)) {
+                        const taskData = tasks[taskName];
+                        if (taskData.timerId) clearInterval(taskData.timerId);
+                    }
+                }
+                
+                // 清空任务对象和列表
+                Object.keys(tasks).forEach(key => delete tasks[key]);
+                taskList.innerHTML = '';
+                
+                // 清除本地存储
+                localStorage.removeItem(STORAGE_KEY);
+                
+                // 更新总时间显示
+                updateOverallTotalTime();
+                
+                console.log("所有数据已清除");
+            }
+        }
+
+        /**
+         * 导出任务数据为 Markdown 表格，并复制到剪贴板。
+         */
+        function exportTasks() {
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getDate().toString().padStart(2, '0')}`;
+            
+            let lines = [];
+            lines.push(`> [!NOTE] ${dateStr}`);
+            lines.push(`> | 项目 | 时间 | 备注 |`);
+            lines.push(`> | --- | --- | --- |`);
+
+            let totalTimeInHours = 0;
+
+            // 遍历所有任务卡片，按页面顺序而非对象属性顺序
+            Array.from(taskList.children).forEach(li => {
+                const name = li.querySelector(".task-name-display").textContent;
+                const taskData = tasks[name];
+                if (taskData) {
+                    const notes = taskData.notesElement.value.replace(/(\r\n|\n|\r)/gm, ' ');
+
+                    let currentTaskTotalSeconds = taskData.totalTime || 0;
+                    if (taskData.timerId !== null) {
+                        currentTaskTotalSeconds += (Date.now() - taskData.currentSegmentStartTime) / 1000;
+                    }
+                    const totalHours = currentTaskTotalSeconds / 3600;
+                    totalTimeInHours += totalHours;
+                    const formattedTaskHours = totalHours.toFixed(1);
+                    
+                    lines.push(`> | ${name} | ${formattedTaskHours}小时 | ${notes} |`);
+                }
+            });
+            
+            // 新增：将总计作为表格的最后一行
+            lines.push(`> | 总计 | ${totalTimeInHours.toFixed(1)}小时 | |`);
+
+            const text = lines.join("\n");
+            // 使用 document.execCommand('copy') 来复制文本，因为它在某些 iframe 环境下更可靠
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            try {
+                const successful = document.execCommand('copy');
+                const msg = successful ? '导出内容已复制到剪贴板！' : '复制失败';
+                console.log(msg);
+            } catch (err) {
+                console.error('复制到剪贴板失败:', err);
+                console.error("复制到剪贴板失败，请手动复制：\n" + text);
+            }
+            document.body.removeChild(tempTextarea);
+        }
+
+        taskInput.addEventListener("keypress", e => {
+            if (e.key === "Enter") {
+                createTask();
+            }
+        });
+
+        // 页面加载时从本地存储恢复数据
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTasksFromStorage();
+            updateOverallTotalTime();
+        });
+
+        // 页面关闭前保存数据
+        window.addEventListener('beforeunload', () => {
+            saveTasksToStorage();
+        });
+    </script>
+</body>
+</html>
